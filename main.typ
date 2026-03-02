@@ -15,3 +15,7 @@
 == Facilities
 
 #include "facillities.typ"
+
+= References
+
+#bibliography("refs.bib", title: none, style: "american-medical-association")
