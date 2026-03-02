@@ -67,9 +67,38 @@ Description of the aim.
 
 Heading levels follow NIH rules automatically: `=` → bold, `==` → bold italic, `===` → italic.
 
+## Exporting individual sections
+
+NIH submissions often require sections uploaded as separate PDFs. Compile any section on its own by passing that file as the entry point — the NIH formatting still applies because each section file sets it directly:
+
+```bash
+# Specific Aims only (1-page limit)
+typst compile --root . aims.typ aims.pdf
+
+# Research Strategy only
+typst compile --root . approach.typ approach.pdf
+```
+
+For this to work, each section file must apply the format itself rather than relying on `main.typ`:
+
+```typst
+// aims.typ
+#import "/assets/grants_common/lib.typ": *
+#show: nih-format
+
+= Specific Aims
+...
+```
+
+If you need a different page limit or margin for a specific section, override just that file:
+
+```typst
+#show: nih-format.with(page: (margin: (all: 0.75in)))
+```
+
 ## Building locally
 
-Requires [Typst](https://typst.app/) 0.13.1 and Liberation Serif (`sudo apt-get install fonts-liberation` or equivalent).
+Requires [Typst](https://typst.app/) 0.14 and Liberation Serif (`sudo apt-get install fonts-liberation` or equivalent).
 
 ```bash
 # Compile once
