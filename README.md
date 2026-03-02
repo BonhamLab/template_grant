@@ -93,7 +93,7 @@ For this to work, each section file must apply the format itself rather than rel
 If you need a different page limit or margin for a specific section, override just that file:
 
 ```typst
-#show: nih-format.with(page: (margin: (all: 0.75in)))
+#show: nih-format.with(page-overrides: (margin: 0.75in))
 ```
 
 ## Building locally
