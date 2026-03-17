@@ -100,12 +100,20 @@ If you need a different page limit or margin for a specific section, override ju
 
 Requires [Typst](https://typst.app/) 0.14 and Liberation Serif (`sudo apt-get install fonts-liberation` or equivalent).
 
-```bash
+```fish
 # Compile once
-typst compile --root . main.typ grant.pdf
+typst compile main.typ grant.pdf
 
 # Watch for changes
 typst watch --root . main.typ grant.pdf
+
+# export with current commit hash
+# fish shell
+typst compile main.typ ~/Downloads/(basename $PWD)-(git rev-parse --short HEAD).pdf
+
+# bash/zsh
+typst compile main.typ ~/Downloads/$(basename $PWD)-$(git rev-parse --short HEAD).pdf
+
 ```
 
 ## Releases and PDF builds
