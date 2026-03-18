@@ -1,7 +1,11 @@
 # Grant Template
 
-[![Build](https://github.com/YOUR-USERNAME/YOUR-REPO/actions/workflows/release.yml/badge.svg)](https://github.com/YOUR-USERNAME/YOUR-REPO/actions/workflows/release.yml)
-[![Latest PDF](https://img.shields.io/github/v/release/YOUR-USERNAME/YOUR-REPO?label=latest%20PDF&logo=adobeacrobatreader)](https://github.com/YOUR-USERNAME/YOUR-REPO/releases/latest/download/grant.pdf)
+[![full|release](https://img.shields.io/badge/full-release-blue?logo=adobeacrobatreader)](https://github.com/YOUR-USERNAME/YOUR-REPO/releases/latest/download/grant.pdf)
+[![full|dev](https://img.shields.io/badge/full-dev-orange?logo=adobeacrobatreader)](https://nightly.link/YOUR-USERNAME/YOUR-REPO/workflows/preview/main/grant-preview.zip)
+[![aims|release](https://img.shields.io/badge/aims-release-blue?logo=adobeacrobatreader)](https://github.com/YOUR-USERNAME/YOUR-REPO/releases/latest/download/aims.pdf)
+[![aims|dev](https://img.shields.io/badge/aims-dev-orange?logo=adobeacrobatreader)](https://nightly.link/YOUR-USERNAME/YOUR-REPO/workflows/preview/main/aims-preview.zip)
+
+![Specific Aims preview](https://raw.githubusercontent.com/YOUR-USERNAME/YOUR-REPO/preview/aims-preview.png)
 
 Typst template for NIH-style grant documents. Uses [Liberation Serif](https://github.com/liberationfonts/liberation-fonts) and enforces NIH formatting rules (US Letter, 0.5″ margins, 11 pt, justified text, heading styles).
 
@@ -20,7 +24,7 @@ Typst template for NIH-style grant documents. Uses [Liberation Serif](https://gi
    git submodule update --init --recursive
    ```
 
-3. Update the two badge URLs at the top of this README to use your username and repo name.
+3. Update the badge URLs and image URL at the top of this README to use your username and repo name.
 4. Copy the CI workflow into place:
 
    ```bash
@@ -35,6 +39,7 @@ Edit the `.typ` files directly. Each section is a separate file:
 | File | Section |
 |---|---|
 | `main.typ` | Entry point — imports sections and applies NIH formatting |
+| `aims-standalone.typ` | Additional entry point — preview of Aims only with formatting |
 | `aims.typ` | Specific Aims |
 | `approach.typ` | Research Strategy / Approach |
 | `facillities.typ` | Facilities & Resources |
@@ -45,15 +50,19 @@ Edit the `.typ` files directly. Each section is a separate file:
 #import "/assets/grants_common/lib.typ": *
 #show: nih-format
 
+== Specific Aimes
 #include "aims.typ"
+
+== Approach
 #include "approach.typ"
-#include "facillities.typ"
+
+== Facilities
+#include "facilities.typ"
 ```
 
 Within a section file, use standard Typst markup:
 
 ```typst
-= Specific Aims
 
 Paragraph text goes here. *Bold*, _italic_, and @citation are supported.
 
@@ -69,26 +78,23 @@ Heading levels follow NIH rules automatically: `=` → bold, `==` → bold itali
 
 ## Exporting individual sections
 
-NIH submissions often require sections uploaded as separate PDFs. Compile any section on its own by passing that file as the entry point — the NIH formatting still applies because each section file sets it directly:
-
-```bash
-# Specific Aims only (1-page limit)
-typst compile --root . aims.typ aims.pdf
-
-# Research Strategy only
-typst compile --root . approach.typ approach.pdf
-```
-
-For this to work, each section file must apply the format itself rather than relying on `main.typ`:
+For exporting individual sections (eg Specific Aims)
+as standalone documents, create a `section-standalone.typ`
+that imports the formatting components and just `include`s
+the relevant section, eg
 
 ```typst
-// aims.typ
+// aims-standalone.typ
 #import "/assets/grants_common/lib.typ": *
 #show: nih-format
 
 = Specific Aims
-...
+
+#include "aims.typ"
+
+#bibliography("refs.bib", title: none, style: "apa")
 ```
+
 
 If you need a different page limit or margin for a specific section, override just that file:
 
@@ -105,7 +111,7 @@ Requires [Typst](https://typst.app/) 0.14 and Liberation Serif (`sudo apt-get in
 typst compile main.typ grant.pdf
 
 # Watch for changes
-typst watch --root . main.typ grant.pdf
+typst watch main.typ grant.pdf
 
 # export with current commit hash
 # fish shell
@@ -118,12 +124,11 @@ typst compile main.typ ~/Downloads/$(basename $PWD)-$(git rev-parse --short HEAD
 
 ## Releases and PDF builds
 
-Creating a GitHub release triggers the CI workflow to compile `main.typ` and attach `grant.pdf` to the release. The **Latest PDF** badge above links directly to the most recent compiled PDF.
+Creating a GitHub release triggers the CI workflow to compile `main.typ` and `aims-standalone.typ`, attaching `grant.pdf` and `aims.pdf` to the release.
 
 To create a release:
 
 ```bash
-git tag v1.0 -m "submission draft"
-git push origin v1.0
-# Then create a release from this tag on GitHub
+gh release create v1.0 --title "submission draft" --notes "Initial submission draft"
 ```
+
