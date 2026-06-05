@@ -1,9 +1,10 @@
 #import "/assets/grants_common/lib.typ": *
 #show: nih-format.with(
-  page-overrides: (numbering: none)
+  // uncomment when ready for final submission
+  // page-overrides: (numbering: none)
 )
 
-#include "aims.typ"
+#include "strategy.typ"
 
 // Comment out the pagebreak and include the #show rule
 // to prevent bibliography from rendering on final submission
