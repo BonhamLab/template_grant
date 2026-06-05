@@ -65,6 +65,8 @@ Within a section file, use standard Typst markup:
 ```typst
 
 Paragraph text goes here. *Bold*, _italic_, and @citation are supported.
+To cite an author inline, you can say #cite(<reftag>, form: "prose")
+said some thing.
 
 == Aim 1: Short title
 
@@ -74,7 +76,11 @@ Description of the aim.
 - Approach: ...
 ```
 
-Heading levels follow NIH rules automatically: `=` → bold, `==` → bold italic, `===` → italic.
+Heading levels provide the following formatting:
+
+- `==` -> All caps, bold
+- `===` -> bold
+- `====` → underline, italic
 
 ## Exporting individual sections
 
@@ -96,9 +102,14 @@ the relevant section, eg
 ```
 
 
-If you need a different page limit or margin for a specific section, override just that file:
+If you need a different formatting,
+you can pass overrides to the format,
+or just set them after the fact:
 
 ```typst
+#show: nih-format
+#set page(margin: 0.75in)
+// or
 #show: nih-format.with(page-overrides: (margin: 0.75in))
 ```
 
@@ -124,7 +135,8 @@ typst compile main.typ ~/Downloads/$(basename $PWD)-$(git rev-parse --short HEAD
 
 ## Releases and PDF builds
 
-Creating a GitHub release triggers the CI workflow to compile `main.typ` and `aims-standalone.typ`, attaching `grant.pdf` and `aims.pdf` to the release.
+Creating a GitHub release triggers the CI workflow to compile `main.typ` and `*-standalone.typ`,
+attaching `grant.pdf` and `*-standalone.pdf` to the release.
 
 To create a release:
 
