@@ -144,3 +144,19 @@ To create a release:
 gh release create v1.0 --title "submission draft" --notes "Initial submission draft"
 ```
 
+### Private submodules
+
+I often like to have code that generates figures in a separate repo.
+Sometimes that other repo is private.
+This is no problem, 
+but if you want the github actions to work,
+you need to make sure the actions can see the other repos.
+
+To do this, you need to generate a private access token
+
+1. go to https://github.com/settings/apps
+2. Select personal access token -> Fine-grained tokens
+3. Create new token (or edit existing one).
+   - it needs to have "content: read-only" permission
+4. Give that token permission for your code repo.
+5. Update the release.yml and preview.yml workflows to use whatever you named it (in place of `SUBMODULE_PAT`)
